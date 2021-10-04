@@ -30,7 +30,7 @@
               <el-input v-model="blog.title"></el-input>
             </el-form-item>
             <el-form-item label="正文">
-              <mavon-editor v-model="blog.text" />
+              <mavon-editor v-model="blog.text"/>
             </el-form-item>
             <el-form-item>
               <div id="button">

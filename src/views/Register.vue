@@ -38,10 +38,12 @@
         <el-form-item label="邮箱验证码" prop="emailCode">
           <el-row :gutter="5">
             <el-col :span="15">
-                <el-input v-model="user.emailCode" :span="8"></el-input>
+              <el-input v-model="user.emailCode" :span="8"></el-input>
             </el-col>
             <el-col :span="4">
-                <el-button @click="getEmailCode()">获取验证码</el-button>
+              <el-button @click="getEmailCode(user.email)"
+                >获取验证码</el-button
+              >
             </el-col>
           </el-row>
         </el-form-item>
@@ -84,14 +86,18 @@ export default {
         return callback(new Error("邮箱验证码不能为空"));
       }
       setTimeout(() => {
-        if (value != user.emailCode) {
+        if (value != this.emailCode) {
           callback(new Error("验证码错误"));
+        } else if (this.statusCode == 500) {
+          callback(new Error("请检查邮箱是否正确"));
         } else {
           callback();
         }
       }, 1000);
     };
     return {
+      emailCode: "",
+      statusCode: null,
       user: {
         name: "",
         sex: 1,
@@ -115,7 +121,9 @@ export default {
           { min: 11, max: 11, message: "长度为11个字符", trigger: "blur" },
         ],
         email: [{ required: true, message: "请输入邮箱", trigger: "blur" }],
-        emailCode: [{ required: true, validator: checkEmailCode, trigger: "blur" }],
+        emailCode: [
+          { required: true, validator: checkEmailCode, trigger: "blur" },
+        ],
         password: [
           { required: true, message: "请输入密码", trigger: "blur" },
           { min: 6, max: 20, message: "长度在6到20个字符", trigger: "blur" },
@@ -124,20 +132,24 @@ export default {
     };
   },
   methods: {
-    submitForm(user) {
-
-    },
+    submitForm(user) {},
     resetForm(user) {
       this.$refs[user].resetFields();
     },
-    getEmailCode(){
-
+    getEmailCode(email) {
+      this.$axios.get("http://47.108.236.102:8080/Account/emailCode", {
+        params: { email: email, operate: "register"},
+      })
+      .then((res) => {
+        this.statusCode = res.data.data.code;
+        this.emailCode = res.data.data.emailCode; 
+      });
     },
   },
 };
 </script>
 
-<style>
+<style  scoped>
 .html {
   height: 100%;
   width: 100%;

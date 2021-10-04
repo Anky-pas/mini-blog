@@ -22,7 +22,7 @@
                 <el-input v-model="user.emailCode" :span="8"></el-input>
             </el-col>
             <el-col :span="4">
-                <el-button @click="getEmailCode()">获取验证码</el-button>
+                <el-button @click="getEmailCode(user.name)">获取验证码</el-button>
             </el-col>
           </el-row>
         </el-form-item>
@@ -74,7 +74,7 @@ export default {
         ],
         emailCode: [{ required: true, validator: checkEmailCode, trigger: "blur" }],
         password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
+          { required: true, message: "请输入新密码", trigger: "blur" },
           { min: 6, max: 20, message: "长度在6到20个字符", trigger: "blur" },
         ],
       },
@@ -87,7 +87,7 @@ export default {
     resetForm(user) {
       this.$refs[user].resetFields();
     },
-    getEmailCode(){
+    getEmailCode(name){
         
     },
   },

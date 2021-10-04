@@ -2,7 +2,7 @@
   <div id="container">
     <div id="item">
       <div id="title">
-        <a href="javascript:void(0);" @click="go">
+        <a href="javascript:void(0);" @click="read()">
           <h3>{{ blog.title }}</h3>
         </a>
       </div>
@@ -29,11 +29,12 @@
 </template>
 
 <script>
+import "mavon-editor/dist/css/index.css"
 export default {
   name: "listItem",
   props: ["blog"],
   methods: {
-    go() {
+    read() {
       this.$router.push({
         path: "/blogDetail",
         query: { blogId: this.blog.blogId },
